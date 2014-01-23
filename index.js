@@ -33,7 +33,7 @@ function ldir(path) {
  */
 
 function isDirectory(path) {
-  return fs.statSync(path).isDirectory();
+  return fs.lstatSync(path).isDirectory();
 }
 
 /**
