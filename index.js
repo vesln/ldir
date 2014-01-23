@@ -3,7 +3,9 @@
  */
 
 var fs = require('fs');
-var join = require('path').join;
+var path = require('path');
+var join = path.join;
+var resolve = path.resolve;
 
 /**
  * Load all JavaScript files in `path` recursively.
@@ -18,7 +20,7 @@ function ldir(path) {
 
   files.forEach(function(file) {
     var full = join(path, file);
-    if (isDirectory(full)) return lodir(full);
+    if (isDirectory(full)) return ldir(full);
     if (isJs(file)) require(full);
   });
 }
