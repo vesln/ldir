@@ -10,9 +10,11 @@ Require all JS files in given dir
 ## Usage
 
 ```js
-var ldir = require('ldir');
+var loaddir = require('ldir');
+var models = loaddir('app/models');
 
-ldir('app/models');
+console.log(models.user);
+console.log(models.subfolder.another.request);
 ```
 
 ## Installation
