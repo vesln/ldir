@@ -4,6 +4,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var ext = path.extname;
 var join = path.join;
 var resolve = path.resolve;
 
@@ -16,13 +17,33 @@ var resolve = path.resolve;
 
 function ldir(path) {
   path = resolve(path);
+
   var files = fs.readdirSync(path);
+  var ret = {};
 
   files.forEach(function(file) {
     var full = join(path, file);
-    if (isDirectory(full)) return ldir(full);
-    if (isJs(file)) require(full);
+    var name = stripExt(file);
+
+    if (isDirectory(full)) {
+      return ret[name] = ldir(full);
+    } else if (isJs(file)) {
+      ret[name] = require(full);
+    }
   });
+
+  return ret;
+}
+
+/**
+ * Strip extension.
+ *
+ * @param {String} file
+ * @api private
+ */
+
+function stripExt(file) {
+  return file.replace(new RegExp(ext(file) + '$'), '');
 }
 
 /**
