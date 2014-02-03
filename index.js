@@ -11,11 +11,16 @@ var resolve = path.resolve;
 /**
  * Load all JavaScript files in `path` recursively.
  *
+ * Options:
+ *
+ * `ext`: the extension of the files that should be loaded, default: .js
+ *
  * @param {String} path
  * @api public
  */
 
-function ldir(path) {
+function ldir(path, opts) {
+  opts = opts || { ext: '.js' };
   path = resolve(path);
 
   var files = fs.readdirSync(path);
@@ -26,8 +31,8 @@ function ldir(path) {
     var name = stripExt(file);
 
     if (isDirectory(full)) {
-      return ret[name] = ldir(full);
-    } else if (isJs(file)) {
+      return ret[name] = ldir(full, opts);
+    } else if (isLoadable(file, opts.ext)) {
       ret[name] = require(full);
     }
   });
@@ -58,14 +63,16 @@ function isDirectory(path) {
 }
 
 /**
- * Return whether `file` has .js extension.
+ * Return whether `file` can be loaded.
  *
+ * @param {String} filename
+ * @param {String} extension
  * @returns {String}
  * @api private
  */
 
-function isJs(file) {
-  return /\.js$/.test(file);
+function isLoadable(file, ext) {
+  return new RegExp(ext + '$').test(file);
 }
 
 /**
