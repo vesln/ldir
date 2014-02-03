@@ -5,7 +5,7 @@
 
 ## Synopsis
 
-Require all JS files in given dir
+Require all files in given dir
 
 ## Usage
 
@@ -15,6 +15,12 @@ var models = loaddir('app/models');
 
 console.log(models.user);
 console.log(models.subfolder.another.request);
+```
+
+### Custom extension
+
+```js
+var fixtures = loaddir('test/fixtures', { ext: '.json' });
 ```
 
 ## Installation
